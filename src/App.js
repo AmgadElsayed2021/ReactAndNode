@@ -1,23 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import { Home, Ratings } from "./pages";
+import { useState, useEffect } from "react";
+import FormData from "form-data";
 
 function App() {
+  let [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    fetch("./movies.json")
+      .then((response) => response.json())
+      .then(setMovies);
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              movies={movies}
+              onRemoveMovie={(title) => {
+                // console.log(title);
+                const updatedMovies = movies.filter(
+                  (movie) => movie.Title !== title
+                );
+                setMovies(updatedMovies);
+                console.log(movies);
+              }}
+            />
+          }
+        />
+        <Route
+          path="/ratings"
+          element={
+            <Ratings
+              newReview={(Title, Actors, Poster, Rating, Released) => {
+                const Review = [
+                  ...movies,
+                  { Title, Actors, Poster, Rating, Released },
+                ];
+                setMovies(Review);
+              }}
+            />
+          }
+        />
+        console.log(formData)
+      </Routes>
     </div>
   );
 }
