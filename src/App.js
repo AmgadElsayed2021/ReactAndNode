@@ -3,15 +3,15 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Home, Ratings } from "./pages";
 import { useState, useEffect } from "react";
-import FormData from "form-data";
 
 function App() {
   let [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch("./movies.json")
+    fetch("/api/movies")
       .then((response) => response.json())
       .then(setMovies);
+    console.log(movies);
   }, []);
   return (
     <div>
